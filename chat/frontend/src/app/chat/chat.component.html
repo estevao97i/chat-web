@@ -4,13 +4,15 @@
       <header>
         Entrar
       </header>
+      <div class="dash"></div>
       <div class="container">
-        <input type="text" #login placeholder="Digite seu nome" [(ngModel)]="input">
+        <h3>Digite seu nome</h3>
+        <input type="text" #login [(ngModel)]="input">
         <!-- <mat-form-field>
           <mat-label>Seu nome aqui</mat-label>
           <input matInput value="Sushi" #login [(ngModel)]="input">
         </mat-form-field> -->
-          <button (click)="loginWebPack(login.value)" mat-button color="primary">Login</button>
+          <button (click)="loginWebPack(login.value)" mat-stroked-button color="primary">Login</button>
       </div>
     </mat-card-content>
   </mat-card>

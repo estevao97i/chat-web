@@ -15,31 +15,56 @@
   justify-content: center;
   align-items: center;
   width: 500px;
+  // min-height: 300px;
 
   mat-card-content {
+    z-index: 1;
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 3rem;
+    padding-bottom: 150px;
 
     header {
-      text-align: center;
-      font-size: 22px;
+      text-align: start;
+      font-size: 40px;
+      font-weight: 100;
       padding: 1rem;
+      position: relative;
       // font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
 
+    header::after{
+      content: '';
+      position: absolute;
+      width: 1.3px;
+      height: 225px;
+      background-color: #cfcfcf;
+      top: 0rem;
+      left: 9rem;
+    }
+
     .container {
+      position: absolute;
+      right: 0rem;
+      bottom: 4.5rem;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      width: 70%;
+
+      h3 {
+        margin: 0 auto;
+        // position: absolute;
+      }
 
       input {
         margin: 0 auto;
         width: 70%;
         height: 26px;
         border-radius: 4px;
-        border: 1px solid #ccc;
+        border: 1px solid #ebebeb;
         padding: 2px 8px;
         // transition: all 0.2s ease-in-out;
 
@@ -47,7 +72,7 @@
 
       input[type=text]:focus {
         // background-color: rgb(253, 253, 253);
-        outline-color: #8a8a8a;
+        outline-color: #d3d3d3;
         // outline-color: #000000;
         outline-offset: 1px;
         // outline: 1px solid red($color: #bdbdbd);
