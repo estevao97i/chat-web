@@ -1,22 +1,23 @@
 <div class="all-screen">
-  <mat-card class="wrapper">
-    <mat-card-content >
-      <header>
-        Entrar
-      </header>
-      <div class="dash"></div>
-      <div class="container">
-        <h3>Digite seu nome</h3>
-        <input type="text" #login [(ngModel)]="input">
-        <!-- <mat-form-field>
-          <mat-label>Seu nome aqui</mat-label>
-          <input matInput value="Sushi" #login [(ngModel)]="input">
-        </mat-form-field> -->
-          <button (click)="loginWebPack(login.value)" mat-stroked-button color="primary">Login</button>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <header class="header">
+    <div>
+      <img src="../../assets/rhesus.svg" alt="Tevin Software">
+    </div>
+    <div class="head-name">Tevin Softwares</div>
+  </header>
+  <div class="screen">
+    <mat-card class="wrapper">
+      <mat-card-content>
+        <header>Entrar</header>
+        <div class="container">
+          <div class="input-data">
+            <h3>Digite seu nome</h3>
+            <input type="text" #login [(ngModel)]="input" />
+          </div>
+        </div>
+        <button (click)="loginWebPack(login.value)">Login</button>
+      </mat-card-content>
+    </mat-card>
+    <div class="version">version {{version}}</div>
+  </div>
 </div>
-<!--
-<div class="wrapper-log">
-</div> -->

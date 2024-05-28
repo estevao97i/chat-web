@@ -8,16 +8,18 @@ import { ChatService } from '../service/chat.service';
 })
 export class ChatComponent implements OnInit {
 
+  version: string = '1.0.0';
+
   input: string = '';
 
   constructor(private service: ChatService) { }
 
   ngOnInit() {
-    // this.service.connect()
+    this.service.connect();
   }
 
   loginWebPack(username: string) {
-
+    this.service.loginUser(username);
   }
 
 }
