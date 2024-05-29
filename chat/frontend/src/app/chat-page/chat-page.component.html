@@ -1,5 +1,10 @@
 <div class="header">
   <header *ngFor="let user of users">
-    {{ user.name }}
+    <div class="user-appearence">
+      <div class="online-ball"></div>
+      <ng-container class="wrapper">
+        {{ user.name }}
+      </ng-container>
+    </div>
   </header>
 </div>

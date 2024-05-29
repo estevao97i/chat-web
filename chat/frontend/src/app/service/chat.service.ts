@@ -42,7 +42,6 @@ export class ChatService {
         }
         console.log(stateOfResponse)
 
-        // const _this = this
         this.content.next(stateOfResponse);
         this.content.asObservable()
 

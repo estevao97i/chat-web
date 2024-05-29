@@ -1,5 +1,46 @@
 .header {
   display: flex;
   gap: 1rem;
-  overflow-x: scroll;
+  overflow-x: auto;
+  height: 5rem;
+  align-items: center;
+
+  &::-webkit-scrollbar {
+    background-color: rgb(235, 235, 235);
+    border-radius: 6px;
+    height: 0.6rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: rgb(206, 206, 206);
+  }
+}
+
+.user-appearence {
+  display: flex;
+  gap: 5px;
+  white-space: nowrap;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  .online-ball {
+    height: 1rem;
+    width: 1rem;
+    background-color: greenyellow;
+    border-radius: 50%;
+    animation: online 1s ease infinite;
+    animation-direction: alternate;
+}
+
+@keyframes online {
+  0% {
+    background-color: greenyellow;
+  }
+  100% {
+    background-color: rgb(234, 255, 158);
+  }
+}
+
+
 }
