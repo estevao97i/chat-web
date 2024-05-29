@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Stomp } from '@stomp/stompjs';
 import * as socket from "sockjs-client/"
 
@@ -9,8 +9,9 @@ import * as socket from "sockjs-client/"
 export class ChatService {
 
   socket: any = null;
-  private stompClient: any;
+  stompClient: any;
   private messageSubject: Subject<string> = new Subject<string>();
+  content: BehaviorSubject<Object> = new BehaviorSubject({});
 
   connect(): void {
     let sockjReturn = socket('http://localhost:8080/ws')
@@ -26,25 +27,30 @@ export class ChatService {
 
   loginUser(username: string) {
     this.stompClient.send('/app/join', {}, JSON.stringify(username))
+    this.onConnected()
   }
 
   onConnected() {
-    this.stompClient.subscribe('/topic/response', this.onMessageReceived)
+    const _this = this;
+    _this.stompClient.subscribe('/topic/response', (payload: any) => {
+      console.log('received', payload);
+        const message = JSON.parse(payload.body)
+        const stateOfResponse = {
+          users: Object.values(message.users),
+          text: message.content || null,
+          activity: message.activity
+        }
+        console.log(stateOfResponse)
+
+        // const _this = this
+        this.content.next(stateOfResponse);
+        this.content.asObservable()
+
+    })
   }
 
-  onMessageReceived(payload: any) {
-    console.log('received', payload);
-    const message = JSON.parse(payload.body)
-
-    const stateOfResponse = {
-      users: Object.values(message.users),
-      text: message.content || null,
-      activity: message.activity
+  onMessageReceived() {
     }
-
-    console.log(stateOfResponse)
-
-  }
 
   sendMessage(message: string): void {
     this.stompClient.send('/app/send', {}, message);
@@ -52,6 +58,11 @@ export class ChatService {
 
   getMessages(): Observable<string> {
     return this.messageSubject.asObservable();
+  }
+
+  getContent(): Observable<Object> {
+    const _this = this;
+    return this.content.asObservable();
   }
 
 }

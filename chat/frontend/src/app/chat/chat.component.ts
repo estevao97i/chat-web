@@ -20,7 +20,7 @@ export class ChatComponent implements OnInit {
   }
 
   loginWebPack(username: string) {
-    // this.service.loginUser(username);
+    this.service.loginUser(username);
     this.router.navigateByUrl('/chat-message');
   }
 

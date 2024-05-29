@@ -35,7 +35,8 @@ public class WebSocketController {
         CONTENT.getActivity().add(new Activity(user, ActivityType.JOIN));
         headerAccessor.getSessionAttributes().put("user", user);
 
-        System.out.println(CONTENT);
+        System.out.println(CONTENT.getUsers().toString());
+        System.out.println(CONTENT.getActivity().toString());
         return CONTENT;
     }
 
