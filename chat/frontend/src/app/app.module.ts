@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { ChatComponent } from './chat/chat.component';
 import { ChatModule } from './chat/chat.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
+import { ChatPageModule } from './chat-page/chat-page.module';
 
 
 @NgModule({
@@ -13,9 +14,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
    ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     ChatModule,
+    ChatPageModule,
     BrowserAnimationsModule,
-
   ],
   providers: [],
   bootstrap: [AppComponent]

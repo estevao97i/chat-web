@@ -30,7 +30,6 @@ public class ConsumerMessageService {
     }
 
     public List<Chat> getChatMessages() {
-        // Implementasikan logika untuk mengembalikan daftar pesan dari Kafka
         return new ArrayList<>(messages);
     }
 }

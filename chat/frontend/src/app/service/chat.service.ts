@@ -18,7 +18,7 @@ export class ChatService {
 
     const _this = this;
     this.stompClient.connect({}, function (frame: any) {
-      _this.stompClient.subscribe('/topic/messages', (message: any) => {
+      _this.stompClient.subscribe('/topic/response', (message: any) => {
         _this.messageSubject.next(message.body);
       });
     });
@@ -26,6 +26,24 @@ export class ChatService {
 
   loginUser(username: string) {
     this.stompClient.send('/app/join', {}, JSON.stringify(username))
+  }
+
+  onConnected() {
+    this.stompClient.subscribe('/topic/response', this.onMessageReceived)
+  }
+
+  onMessageReceived(payload: any) {
+    console.log('received', payload);
+    const message = JSON.parse(payload.body)
+
+    const stateOfResponse = {
+      users: Object.values(message.users),
+      text: message.content || null,
+      activity: message.activity
+    }
+
+    console.log(stateOfResponse)
+
   }
 
   sendMessage(message: string): void {

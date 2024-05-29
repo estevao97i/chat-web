@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../service/chat.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -12,14 +13,15 @@ export class ChatComponent implements OnInit {
 
   input: string = '';
 
-  constructor(private service: ChatService) { }
+  constructor(private service: ChatService, private router: Router) { }
 
   ngOnInit() {
     this.service.connect();
   }
 
   loginWebPack(username: string) {
-    this.service.loginUser(username);
+    // this.service.loginUser(username);
+    this.router.navigateByUrl('/chat-message');
   }
 
 }

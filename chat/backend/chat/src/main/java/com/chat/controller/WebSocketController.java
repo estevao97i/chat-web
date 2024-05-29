@@ -1,5 +1,7 @@
 package com.chat.controller;
 
+import com.chat.enums.ActivityType;
+import com.chat.model.Activity;
 import com.chat.model.Chat;
 import com.chat.model.Content;
 import com.chat.model.User;
@@ -21,21 +23,24 @@ import javax.swing.text.AbstractDocument;
 //@CrossOrigin(origins = "http://localhost:4200/")
 public class WebSocketController {
 
-    private static final Content content = new Content();
+    private static final Content CONTENT = new Content();
 
     private final ProducerMessageService serviceProducer;
     private final ConsumerMessageService serviceConsumer;
 
     @MessageMapping("/join")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/response")
     public Content joinUser(@Payload User user, SimpMessageHeaderAccessor headerAccessor) {
-//        System.out.println(user.getName());
+        CONTENT.getUsers().add(user);
+        CONTENT.getActivity().add(new Activity(user, ActivityType.JOIN));
+        headerAccessor.getSessionAttributes().put("user", user);
 
-
+        System.out.println(CONTENT);
+        return CONTENT;
     }
 
     @MessageMapping("/send")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/response")
     public void sendMessage(@Payload Chat message) {
         serviceProducer.sendMessage(message);
     }
