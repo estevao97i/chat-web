@@ -35,14 +35,13 @@ public class WebSocketController {
         CONTENT.getActivity().add(new Activity(user, ActivityType.JOIN));
         headerAccessor.getSessionAttributes().put("user", user);
 
-        System.out.println(CONTENT.getUsers().toString());
-        System.out.println(CONTENT.getActivity().toString());
         return CONTENT;
     }
 
     @MessageMapping("/send")
     @SendTo("/topic/response")
     public void sendMessage(@Payload Chat message) {
+        CONTENT.getActivity();
         serviceProducer.sendMessage(message);
     }
 

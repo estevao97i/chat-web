@@ -15,6 +15,5 @@ public class Chat implements Serializable {
 
     private String sender;
     private String content;
-    private MessageType type;
 
 }

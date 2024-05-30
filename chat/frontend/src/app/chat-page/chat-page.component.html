@@ -1,10 +1,31 @@
-<div class="header">
-  <header *ngFor="let user of users">
-    <div class="user-appearence">
-      <div class="online-ball"></div>
-      <ng-container class="wrapper">
-        {{ user.name }}
+<div class="container-grid">
+  <div class="header">
+    <header *ngFor="let user of users">
+      <div class="user-appearence">
+        <div class="online-ball"></div>
+        <ng-container class="wrapper">
+          {{ user.name }}
+        </ng-container>
+      </div>
+    </header>
+  </div>
+  <div class="message">
+    <section>
+      <ng-container *ngFor="let message of messages">
+        {{message.user}}: {{message.content}}
       </ng-container>
-    </div>
-  </header>
+    </section>
+    <footer>
+      <div class="btn-action">
+        <input type="text-area" #inputMessage>
+        <button (click)="sendMessage(inputMessage.value)">Send</button>
+      </div>
+    </footer>
+  </div>
+  <div class="content">
+
+  </div>
 </div>
+
+
+

@@ -1,46 +1,127 @@
-.header {
-  display: flex;
+.container-grid {
+  display: grid;
+  height: calc(100% - 2rem);
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 100px repeat(5, 1fr);
   gap: 1rem;
-  overflow-x: auto;
-  height: 5rem;
-  align-items: center;
+  padding: 1rem;
 
-  &::-webkit-scrollbar {
-    background-color: rgb(235, 235, 235);
-    border-radius: 6px;
-    height: 0.6rem;
+  grid-template-areas:
+    'online online online online message'
+    'content content content content message'
+    'content content content content message'
+    'content content content content message'
+    'content content content content message'
+    'content content content content message';
+
+  .header {
+    grid-area: online;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    &::-webkit-scrollbar {
+      background-color: rgb(235, 235, 235);
+      border-radius: 6px;
+      height: 0.6rem;
+      width: 0.6rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background-color: rgb(206, 206, 206);
+    }
   }
 
-  &::-webkit-scrollbar-thumb {
-    border-radius: 6px;
-    background-color: rgb(206, 206, 206);
+  .user-appearence {
+    display: flex;
+    gap: 5px;
+    white-space: nowrap;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    .online-ball {
+      height: 1rem;
+      width: 1rem;
+      border-radius: 50%;
+      animation: online 1s ease infinite;
+      animation-direction: alternate;
+    }
+
+    @keyframes online {
+      0% {
+        background-color: rgb(0, 255, 21);
+      }
+
+      100% {
+        background-color: rgb(227, 255, 222);
+      }
+    }
+
   }
 }
 
-.user-appearence {
-  display: flex;
-  gap: 5px;
-  white-space: nowrap;
-  padding-left: 1rem;
-  padding-right: 1rem;
+.message {
+  grid-area: message;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 1rem;
+  position: relative;
 
-  .online-ball {
-    height: 1rem;
-    width: 1rem;
-    background-color: greenyellow;
-    border-radius: 50%;
-    animation: online 1s ease infinite;
-    animation-direction: alternate;
-}
+  footer {
+    position: relative;
+    top: calc(100% - 2rem);
+    width: 100%;
+    // left: 0.5rem;
+    // display: flex;
+    // width: 80%;
 
-@keyframes online {
-  0% {
-    background-color: greenyellow;
+    .btn-action {
+      margin: 0 auto;
+      display: flex;
+      gap: 6px;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      // width: max-content;
+
+      input {
+        border-radius: 4px;
+        border: 1px solid #c0c0c0;
+      }
+
+      input[type="text-area"]:focus {
+        outline-color: #86dbff;
+        outline-offset: 1px;
+      }
+
+      button {
+        border: 1px solid rgb(104, 218, 104);
+        background-color: #ffffff;
+        color: rgb(30, 182, 0);
+        border-radius: 4px;
+        cursor: pointer;
+        // height: 2rem;
+        font-weight: 600;
+        // width: 80%;
+        padding: .5rem 0.8rem;
+
+        &:hover {
+          background-color: #6fee3d;
+          color: white;
+        }
+      }
+    }
+
   }
-  100% {
-    background-color: rgb(234, 255, 158);
-  }
+}
+
+.content {
+  padding: 1rem;
+  grid-area: content;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 
-}
