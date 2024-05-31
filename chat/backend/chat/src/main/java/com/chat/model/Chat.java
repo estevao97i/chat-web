@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Chat implements Serializable {
 
-    private String sender;
+    private User user;
     private String content;
 
 }

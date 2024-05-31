@@ -9,23 +9,67 @@
       </div>
     </header>
   </div>
+  <div class="leave">
+    <button (click)="leaveRoom()">Leave</button>
+  </div>
   <div class="message">
-    <section>
-      <ng-container *ngFor="let message of messages">
-        {{message.user}}: {{message.content}}
+    <section #sectionMessages>
+      <ng-container *ngFor="let item of messages">
+        <ng-container *ngIf="item.message === null">
+          {{ item.type }}: {{ item.user.name }}
+          <br />
+        </ng-container>
+        <ng-container *ngIf="item.type === 'CHAT'">
+          {{ item.user.name }}: {{ item.message }}
+          <br />
+        </ng-container>
       </ng-container>
     </section>
     <footer>
-      <div class="btn-action">
-        <input type="text-area" #inputMessage>
-        <button (click)="sendMessage(inputMessage.value)">Send</button>
-      </div>
+      <form [formGroup]="form">
+        <div class="btn-action">
+          <input
+            type="text-area"
+            #inputMessage
+            formControlName="inputMessage"
+          />
+          <button
+            (click)="sendMessage(inputMessage.value)"
+            (keydown.enter)="sendMessage(inputMessage.value)"
+          >
+            Send
+          </button>
+        </div>
+      </form>
     </footer>
   </div>
   <div class="content">
-
+    <div class="content-file">
+      <label>No Content</label>
+    </div>
+    <nav>
+      <div class="insert-file">
+        <button (click)="fileInput.click()">Select File</button>
+        <input
+          type="file"
+          #fileInput
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          style="display: none"
+        />
+      </div>
+      <ng-container *ngIf="images.length < 1" >
+        <label class="label-no-selected-files">No Selected files</label>
+      </ng-container>
+      <ng-container *ngIf="images.length > 0">
+        <div class="files">
+          <div class="file-select" *ngFor="let item of images">
+            <img src="{{item.image}}" alt="" />
+            <label> {{item.description}}
+            </label>
+          </div>
+        </div>
+      </ng-container>
+    </nav>
   </div>
 </div>
-
-
-

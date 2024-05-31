@@ -15,7 +15,7 @@
             <input type="text" #login [(ngModel)]="input" />
           </div>
         </div>
-        <button (click)="loginWebPack(login.value)">Login</button>
+        <button (click)="loginWebPack(login.value)" (keydown.enter)="loginWebPack(login.value)">Login</button>
       </mat-card-content>
     </mat-card>
     <div class="version">version {{version}}</div>
