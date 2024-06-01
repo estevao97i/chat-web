@@ -15,12 +15,16 @@
   <div class="message">
     <section #sectionMessages>
       <ng-container *ngFor="let item of messages">
-        <ng-container *ngIf="item.message === null">
-          {{ item.type }}: {{ item.user.name }}
+        <ng-container *ngIf="item.message === null" >
+          <div class="joined-leave">
+            <label >{{ item.type }}</label>: <label>{{ item.user.name }}</label>
+          </div>
           <br />
         </ng-container>
         <ng-container *ngIf="item.type === 'CHAT'">
-          {{ item.user.name }}: {{ item.message }}
+          <div class="item-appearence">
+            <label for="">{{ item.user.name }}</label> <label for="">{{ item.message }}</label>
+          </div>
           <br />
         </ng-container>
       </ng-container>
@@ -45,7 +49,14 @@
   </div>
   <div class="content">
     <div class="content-file">
-      <label>No Content</label>
+      <ng-container *ngIf="!imagePresenting">
+        <label>No Content</label>
+      </ng-container>
+      <ng-container *ngIf="imagePresenting">
+        <div class="present-img">
+          <img src="{{imagePresenting}}" alt=""/>
+        </div>
+      </ng-container>
     </div>
     <nav>
       <div class="insert-file">
@@ -62,12 +73,13 @@
         <label class="label-no-selected-files">No Selected files</label>
       </ng-container>
       <ng-container *ngIf="images.length > 0">
-        <div class="files">
-          <div class="file-select" *ngFor="let item of images">
-            <img src="{{item.image}}" alt="" />
-            <label> {{item.description}}
-            </label>
-          </div>
+        <div class="files" >
+          <!-- <div class="file-select" > -->
+            <button (dblclick)="insertImageContent(imageCaroussel)" *ngFor="let item of images">
+              <img src="{{item.image}}" alt="" #imageCaroussel />
+              <label> {{item.description}}</label>
+            </button>
+          <!-- </div> -->
         </div>
       </ng-container>
     </nav>

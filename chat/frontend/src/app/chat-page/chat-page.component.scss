@@ -44,8 +44,9 @@
     display: flex;
     gap: 5px;
     white-space: nowrap;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 4px 12px 0px 12px;
+    border: 1px solid rgb(0, 255, 0);
+    border-radius: 14px;
 
     .online-ball {
       height: 1rem;
@@ -92,14 +93,13 @@
   grid-area: message;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  // padding: 1rem;
   padding-bottom: 0rem;
   position: relative;
 
   section {
     padding: 1rem;
     height: calc(100% - 6rem);
-    overflow-y: auto;
+    overflow-y: scroll;
 
     &::-webkit-scrollbar {
       background-color: rgb(235, 235, 235);
@@ -111,6 +111,45 @@
     &::-webkit-scrollbar-thumb {
       border-radius: 6px;
       background-color: rgb(206, 206, 206);
+    }
+
+    .item-appearence {
+      display: flex;
+      gap: .5rem;
+
+      & :nth-child(1) {
+        background-color: rgb(18, 189, 32);
+        color: white;
+        padding: 3px 6px;
+        border-radius: 14px;
+        height: min-content;
+      }
+
+      & :nth-child(2) {
+        margin-top: 12px;
+        max-width: 4rem;
+        white-space: wrap;
+        word-wrap: break-word; /* Permite quebra de palavras longas */
+        hyphens: auto; /* Adiciona hífens conforme necessário */
+        padding: 4px 8px;
+        border-radius: 0px 14px 14px 14px;
+        color: white;
+        background-color: rgb(86, 99, 216);
+      }
+    }
+
+    .joined-leave {
+      font-size: 12px;
+      display: flex;
+      gap: .5rem;
+      margin: 0 auto;
+      max-width: fit-content;
+      padding: 4px 8px;
+
+      background-color: #ccc;
+      font-weight: 300;
+      border-radius: 14px;
+      color: white;
     }
   }
 
@@ -179,6 +218,28 @@
       font-weight: 500;
       color: rgb(199, 199, 199);
     }
+
+    .present-img {
+      max-height: 98%;
+      overflow-y: auto;
+
+      img {
+        max-width: 98%;
+        object-fit: cover;
+      }
+
+      &::-webkit-scrollbar {
+        background-color: rgb(235, 235, 235);
+        border-radius: 6px;
+        height: 0.6rem;
+        width: 0.6rem;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+        background-color: rgb(206, 206, 206);
+      }
+    }
   }
 
   & nav {
@@ -196,13 +257,14 @@
 
     .insert-file {
       display: flex;
-      height: 100%;
+      justify-content: center;
+      height: 50%;
 
       button {
         bottom: 1.5rem;
         left: 1rem;
-        // height: 100%;
-        padding: calc(100% - 4rem) 1rem;
+        // height: 50%;
+        padding: calc(100% - 6rem) 1rem;
         border: 1px solid rgb(170, 191, 201);
         background-color: #ffffff;
         color: rgb(131, 141, 150);
@@ -227,37 +289,58 @@
       width: 100%;
       justify-content: flex-start;
 
-      .file-select {
+      // .file-select {
         // width: 10vh;
         // height: 10vh;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        justify-content: center;
-        align-items: center;
 
-        img {
-          max-width: 70%;
-          max-height: 70%;
+        button {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          justify-content: center;
+          align-items: center;
+          background: transparent;
+          border: none;
+          // width: 10%;
 
-          object-fit: contain;
-          border-radius: 6px;
-          box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-          flex-grow: 1;
-          background-color: #ccc;
+          img {
+            max-width: 80%;
+            max-height: 80%;
+            cursor: pointer;
+
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            flex-grow: 1;
+            background-color: #ccc;
+            transition: all .3s ease;
+
+            &:hover {
+              transform: scale(1.03);
+            }
+
+            &.clicked {
+              z-index: 1000;
+              background-color: black;
+              opacity: 0.5;
+            }
+          }
+
+          label {
+            cursor: pointer;
+            max-width: 8rem;
+            min-width: 8rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 14px;
+            flex-shrink: 1;
+            text-align: center;
+          }
+
         }
 
-        label {
-          max-width: 8rem;
-          min-width: 8rem;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-          font-size: 14px;
-          flex-shrink: 1;
-          text-align: center;
-        }
-      }
+      // }
 
       &::-webkit-scrollbar {
         background-color: rgb(235, 235, 235);

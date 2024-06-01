@@ -23,6 +23,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   selectedFile: File | null = null;
   images: any[] = [];
   fileContent: string | ArrayBuffer | null = null;
+  imagePresenting: any;
 
   constructor(
     private service: ChatService,
@@ -72,7 +73,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   timeOutScroll() {
     setTimeout(() => {
       this.scrollToBottom();
-    }, 10);
+    }, 5);
   }
 
   scrollToBottom(): void {
@@ -98,5 +99,11 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
       };
       reader.readAsDataURL(this.selectedFile)
     }
+  }
+
+  insertImageContent(e: any) {
+    const inputImg = e as HTMLImageElement
+    this.imagePresenting = inputImg.src
+    console.log(this.imagePresenting)
   }
 }

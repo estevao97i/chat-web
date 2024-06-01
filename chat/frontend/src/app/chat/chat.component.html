@@ -12,7 +12,8 @@
         <div class="container">
           <div class="input-data">
             <h3>Digite seu nome</h3>
-            <input type="text" #login [(ngModel)]="input" />
+            <input type="text" #login [(ngModel)]="input"
+            maxlength="16"/>
           </div>
         </div>
         <button (click)="loginWebPack(login.value)" (keydown.enter)="loginWebPack(login.value)">Login</button>
