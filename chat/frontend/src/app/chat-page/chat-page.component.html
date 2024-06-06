@@ -74,12 +74,10 @@
       </ng-container>
       <ng-container *ngIf="images.length > 0">
         <div class="files" >
-          <!-- <div class="file-select" > -->
             <button (dblclick)="insertImageContent(imageCaroussel)" *ngFor="let item of images">
               <img src="{{item.image}}" alt="" #imageCaroussel />
               <label> {{item.description}}</label>
             </button>
-          <!-- </div> -->
         </div>
       </ng-container>
     </nav>

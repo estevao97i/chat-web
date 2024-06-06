@@ -8,6 +8,7 @@ import {
 import { ChatService } from '../service/chat.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import * as pako from 'pako';
 
 @Component({
   selector: 'app-chat-page',
@@ -22,8 +23,9 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   form!: FormGroup;
   selectedFile: File | null = null;
   images: any[] = [];
-  fileContent: string | ArrayBuffer | null = null;
+  fileContent: string | ArrayBuffer | any = null;
   imagePresenting: any;
+  binaryString: any;
 
   constructor(
     private service: ChatService,
@@ -49,6 +51,13 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     this.service.messages$.subscribe({
       next: (value: any) => {
         this.messages = value.activity;
+      },
+    });
+    this.timeOutScroll();
+
+    this.service.img$.subscribe({
+      next: (value: any) => {
+        this.imagePresenting = value;
       },
     });
     this.timeOutScroll();
@@ -94,16 +103,28 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
         this.fileContent = reader.result;
         this.images.push({
           image: this.fileContent,
-          description: this.selectedFile?.name
-        })
+          description: this.selectedFile?.name,
+        });
       };
-      reader.readAsDataURL(this.selectedFile)
+      // reader.readAsDataURL(this.selectedFile)
+      reader.readAsDataURL(this.selectedFile);
     }
   }
 
   insertImageContent(e: any) {
-    const inputImg = e as HTMLImageElement
-    this.imagePresenting = inputImg.src
-    console.log(this.imagePresenting)
+    // const inputImg = e as HTMLImageElement;
+    // this.imagePresenting = inputImg.src;
+
+    this.service.presentImage(this.selectedFile)
+
+    // const binaryData = new Uint8Array(this.fileContent);
+    // const compressedData: Uint8Array = pako.gzip(binaryData);
+    // this.service.callStompClientImg(compressedData);
+
+    // this.service.presentImage(this.fileContent, this.binaryString);
+    // this.service.img$.subscribe({
+    //   next: (value: any) => this.imagePresenting = value
+    // })
+    // console.log(this.imagePresenting)
   }
 }
