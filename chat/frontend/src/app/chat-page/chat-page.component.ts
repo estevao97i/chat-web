@@ -104,6 +104,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
         this.images.push({
           image: this.fileContent,
           description: this.selectedFile?.name,
+          inputFile: this.selectedFile
         });
       };
       // reader.readAsDataURL(this.selectedFile)
@@ -112,10 +113,14 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   }
 
   insertImageContent(e: any) {
+    const selected = this.images.find(obj => {
+      return obj.inputFile.name === e.innerText
+    })
+    console.log(e.innerText)
     // const inputImg = e as HTMLImageElement;
     // this.imagePresenting = inputImg.src;
 
-    this.service.presentImage(this.selectedFile)
+    this.service.presentImage(selected.inputFile)
 
     // const binaryData = new Uint8Array(this.fileContent);
     // const compressedData: Uint8Array = pako.gzip(binaryData);
