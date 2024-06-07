@@ -8,7 +8,7 @@ import {
 import { ChatService } from '../service/chat.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-chat-page',
@@ -17,6 +17,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class ChatPageComponent implements OnInit, AfterViewInit {
   @ViewChild('sectionMessages') sectionMessages!: ElementRef;
+  @ViewChild('btnMouse') btnMouse!: ElementRef;
 
   users: any[] = [];
   messages: any[] = [];
@@ -26,6 +27,8 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   fileContent: string | ArrayBuffer | any = null;
   imagePresenting: any = null;
   binaryString: any;
+  willBeDeleted: any;
+  delete: any;
 
   constructor(
     private service: ChatService,
@@ -50,7 +53,6 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
     this.service.messages$.subscribe({
       next: (value: any) => {
         if (value.activity) {
@@ -67,12 +69,14 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
         }
       },
     });
+
+    this.btnMouse.nativeElement.onmousedown();
   }
 
   sendMessage(message: string) {
     if (!message) return;
     this.service.sendMessage(
-      message,
+      message
       // this.messages[this.messages.length - 1].user.name
     );
     this.form.get('inputMessage')?.setValue(null);
@@ -110,7 +114,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
         this.images.push({
           image: this.fileContent,
           description: this.selectedFile?.name,
-          inputFile: this.selectedFile
+          inputFile: this.selectedFile,
         });
       };
       reader.readAsDataURL(this.selectedFile);
@@ -118,10 +122,30 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   }
 
   insertImageContent(e: any) {
-    const selected = this.images.find(obj => {
-      return obj.inputFile.name === e.innerText
-    })
+    const selected = this.images.find((obj) => {
+      return obj.inputFile.name === e.innerText;
+    });
 
-    this.service.presentImage(selected.inputFile)
+    this.service.presentImage(selected.inputFile);
+  }
+
+  noMouseDown(e: any) {
+    this.willBeDeleted = e.innerText;
+    this.delete = setTimeout(() => {
+      this.onHoldComplete();
+    }, 1000);
+  }
+
+  onMouseLeave() {
+    clearTimeout(this.delete);
+  }
+
+  onMouseUp() {
+    clearTimeout(this.delete);
+  }
+
+  onHoldComplete() {
+    const indexDelete = this.images.findIndex((item) => item.description == this.willBeDeleted)
+    this.images.splice(indexDelete, 1);
   }
 }
