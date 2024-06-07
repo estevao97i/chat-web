@@ -75,7 +75,7 @@
       <ng-container *ngIf="images.length > 0">
         <div class="files" >
             <button (dblclick)="insertImageContent(nameImg)"
-             (mousedown)="noMouseDown(nameImg)" (mouseup)="onMouseUp()" (mouseleave)="onMouseLeave()"
+             (mousedown)="noMouseDown(nameImg, imageCaroussel)" (mouseup)="onMouseUp()" (mouseleave)="onMouseLeave()"
             *ngFor="let item of images">
               <img src="{{item.image}}" alt="" #imageCaroussel />
               <label #nameImg> {{item.description}} </label>

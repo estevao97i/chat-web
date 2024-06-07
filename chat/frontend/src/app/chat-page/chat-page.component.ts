@@ -29,6 +29,9 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   binaryString: any;
   willBeDeleted: any;
   delete: any;
+  animationImg!: Animation;
+  animationText!: Animation;
+  durationEffect: number = 650;
 
   constructor(
     private service: ChatService,
@@ -129,18 +132,42 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     this.service.presentImage(selected.inputFile);
   }
 
-  noMouseDown(e: any) {
+  noMouseDown(e: HTMLElement, img: HTMLImageElement) {
     this.willBeDeleted = e.innerText;
+    this.animationText = e.animate([
+      { transform: 'scale(1)' },
+      { transform: 'scale(0.9)', opacity: '0.2' },
+    ], {
+      duration: this.durationEffect,
+      fill: 'forwards'
+    })
+
+    this.animationImg = img.animate([
+      { transform: 'scale(1)' },
+      { transform: 'scale(0.9)', opacity: '0.2' },
+    ], {
+      duration: this.durationEffect,
+      fill: 'forwards'
+    })
+
     this.delete = setTimeout(() => {
       this.onHoldComplete();
-    }, 1000);
+    }, this.durationEffect);
   }
 
   onMouseLeave() {
+    if (this.animationImg) {
+      this.animationImg.cancel();
+      this.animationText.cancel();
+    }
     clearTimeout(this.delete);
   }
 
   onMouseUp() {
+    if (this.animationImg) {
+      this.animationImg.cancel();
+      this.animationText.cancel();
+    }
     clearTimeout(this.delete);
   }
 
