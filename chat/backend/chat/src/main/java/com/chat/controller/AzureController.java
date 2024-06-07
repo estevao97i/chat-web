@@ -6,6 +6,8 @@ import com.chat.model.Content;
 import com.chat.service.AzureBlobStorageService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,19 +30,16 @@ public class AzureController {
     private static final Content CONTENT = new Content();
 
     @PostMapping("/upload")
-    public Content singleFileUpload(@RequestParam("img") MultipartFile file) throws IOException {
+    public ResponseEntity<String> singleFileUpload(@RequestParam("img") MultipartFile file) throws IOException {
         try {
             String blobUrl = azureBlobStorageService.uploadFile(file);
-            CONTENT.getActivity().add(new Activity(blobUrl, ActivityType.SHARE));
+//            CONTENT.getActivity().add(new Activity(blobUrl, ActivityType.SHARE));
 
-            simpMessagingTemplate.convertAndSend("/topic/content", CONTENT);
-
-            return CONTENT;
-//            return new ResponseEntity<>("File uploaded successfully: " + blobUrl, HttpStatus.OK);
+//            simpMessagingTemplate.convertAndSend("/topic/content", CONTENT);
+            return new ResponseEntity<>(blobUrl, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
-            return CONTENT;
-//            return new ResponseEntity<>("Failed to upload file", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.notFound().build();
         }
     }
 }

@@ -15,7 +15,7 @@
   <div class="message">
     <section #sectionMessages>
       <ng-container *ngFor="let item of messages">
-        <ng-container *ngIf="item.message === null" >
+        <ng-container *ngIf="item.type === 'JOIN' || item.type === 'LEAVE'" >
           <div class="joined-leave">
             <label >{{ item.type }}</label>: <label>{{ item.user.name }}</label>
           </div>

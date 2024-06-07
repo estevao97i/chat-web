@@ -13,7 +13,7 @@ public class Activity implements Serializable {
     private User user;
     private ActivityType type;
     private String message;
-    private String img;
+    private String imgSrc;
 
     public Activity(User userComing, ActivityType activityType) {
         this.user = userComing;
@@ -27,7 +27,7 @@ public class Activity implements Serializable {
     }
 
     public Activity(String img, ActivityType type) {
-        this.img = img;
+        this.imgSrc = img;
         this.type = type;
     }
 }

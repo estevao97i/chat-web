@@ -29,6 +29,7 @@ export class ChatService {
       _this.stompClient.subscribe('/topic/response', (message: any) => {
         _this.messageSubject.next(message.body);
       });
+      _this.imgResponse()
     });
   }
 
@@ -55,7 +56,7 @@ export class ChatService {
     });
   }
 
-  sendMessage(message: string, user: any): void {
+  sendMessage(message: string): void {
     const sendMessage = {
       user: { name: this.client },
       content: message,
@@ -84,10 +85,18 @@ export class ChatService {
     const formData: FormData = new FormData();
     formData.append('img', file, file.name)
 
-    this.http.post('http://localhost:8080/upload', formData).subscribe((data) => {
-      this.imgResponse()
-      // console.log(data)
+    this.http.post('http://localhost:8080/upload', formData, { responseType: 'text' }).subscribe((data: any) => {
+      console.log('data -> ', data)
+      this.callStompClientImg(data)
     });
+  }
+
+  callStompClientImg(data: any) {
+    const request = {
+      imgSrc: data
+    }
+    this.stompClient.send('/app/img', {}, JSON.stringify(request));
+    this.imgResponse();
   }
 
   imgResponse() {
@@ -97,7 +106,8 @@ export class ChatService {
       try {
         // console.log(payload.body);
         const response = JSON.parse(payload.body);
-        this.downloadImage(response.activity[response.activity.length - 1].img)
+        const downloadFile = response.activity[response.activity.length - 1].imgSrc
+        this.downloadImage(downloadFile);
       } catch (error) {
         console.error(error);
       }
@@ -118,15 +128,7 @@ export class ChatService {
     });
   }
 
-  callStompClientImg(data: Uint8Array) {
-    const request = new Uint8Array();
-    // request
-    this.stompClient.send('/app/img', {}, data.buffer);
-    // this.onImgReceived();
-    this.imgResponse();
-  }
-
-  removeUser(user: Object) {
+  removeUser() {
     this.disconnect();
     // this.stompClient.send('/app/remove', {}, JSON.stringify(user));
     // this.onDisConnected()

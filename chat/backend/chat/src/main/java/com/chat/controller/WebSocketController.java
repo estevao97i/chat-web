@@ -2,16 +2,11 @@ package com.chat.controller;
 
 import com.chat.enums.ActivityType;
 import com.chat.model.*;
-import com.chat.service.AzureBlobStorageService;
 import com.chat.service.ConsumerMessageService;
 import com.chat.service.ProducerMessageService;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.context.event.EventListener;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -20,23 +15,9 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import javax.swing.text.AbstractDocument;
-import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 @Controller
 @RequiredArgsConstructor
@@ -72,18 +53,14 @@ public class WebSocketController {
     }
 
     @MessageMapping("/img")
-    public Content sendImg(@Payload byte[] compressedImg) {
-        System.out.println(Arrays.toString(compressedImg));
-        System.out.println("chegou aqui");
-
-        simpMessagingTemplate.convertAndSend("/topic/content", compressedImg);
+    public Content sendImg(@Payload Imagem img) {
+        CONTENT.getActivity().add(new Activity(img.getImgSrc(), ActivityType.SHARE));
+        simpMessageSendingOperations.convertAndSend("/topic/content", CONTENT);
 
         return CONTENT;
     }
 
-
     @MessageMapping("/remove")
-//    @SendTo("/topic/response")
     public Content removeUser(@Payload User user) {
         CONTENT.getUsers().remove(user);
         CONTENT.getActivity().add(new Activity(user, ActivityType.LEAVE));

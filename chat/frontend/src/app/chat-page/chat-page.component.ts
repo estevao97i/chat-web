@@ -8,7 +8,7 @@ import {
 import { ChatService } from '../service/chat.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import * as pako from 'pako';
+
 
 @Component({
   selector: 'app-chat-page',
@@ -41,33 +41,37 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     this.service.content.subscribe({
       next: (value: any) => {
         this.users = value.users;
-        this.messages = value.activity;
+        if (value.activity) {
+          this.messages = value.activity;
+        }
+        this.timeOutScroll();
       },
     });
-    this.timeOutScroll();
   }
 
   ngAfterViewInit(): void {
+
     this.service.messages$.subscribe({
       next: (value: any) => {
-        this.messages = value.activity;
+        if (value.activity) {
+          this.messages = value.activity;
+        }
+        this.timeOutScroll();
       },
     });
-    this.timeOutScroll();
 
     this.service.img$.subscribe({
       next: (value: any) => {
         this.imagePresenting = value;
       },
     });
-    this.timeOutScroll();
   }
 
   sendMessage(message: string) {
     if (!message) return;
     this.service.sendMessage(
       message,
-      this.messages[this.messages.length - 1].user.name
+      // this.messages[this.messages.length - 1].user.name
     );
     this.form.get('inputMessage')?.setValue(null);
     this.timeOutScroll();
@@ -75,14 +79,14 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
 
   leaveRoom() {
     const user = this.messages[this.messages.length - 1].user;
-    this.service.removeUser(user);
+    this.service.removeUser();
     this.router.navigateByUrl('/');
   }
 
   timeOutScroll() {
     setTimeout(() => {
       this.scrollToBottom();
-    }, 5);
+    }, 10);
   }
 
   scrollToBottom(): void {
@@ -107,7 +111,6 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
           inputFile: this.selectedFile
         });
       };
-      // reader.readAsDataURL(this.selectedFile)
       reader.readAsDataURL(this.selectedFile);
     }
   }
@@ -116,20 +119,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     const selected = this.images.find(obj => {
       return obj.inputFile.name === e.innerText
     })
-    console.log(e.innerText)
-    // const inputImg = e as HTMLImageElement;
-    // this.imagePresenting = inputImg.src;
 
     this.service.presentImage(selected.inputFile)
-
-    // const binaryData = new Uint8Array(this.fileContent);
-    // const compressedData: Uint8Array = pako.gzip(binaryData);
-    // this.service.callStompClientImg(compressedData);
-
-    // this.service.presentImage(this.fileContent, this.binaryString);
-    // this.service.img$.subscribe({
-    //   next: (value: any) => this.imagePresenting = value
-    // })
-    // console.log(this.imagePresenting)
   }
 }
