@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Stomp } from '@stomp/stompjs';
 import * as socket from 'sockjs-client/';
-import * as pako from 'pako';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +16,6 @@ export class ChatService {
   img$: BehaviorSubject<Object> = new BehaviorSubject({});
   client!: string;
 
-
   constructor(private http: HttpClient) {}
 
   connect(): void {
@@ -29,7 +27,7 @@ export class ChatService {
       _this.stompClient.subscribe('/topic/response', (message: any) => {
         _this.messageSubject.next(message.body);
       });
-      _this.imgResponse()
+      _this.imgResponse();
     });
   }
 
@@ -49,7 +47,6 @@ export class ChatService {
         text: message.content || null,
         activity: message.activity,
       };
-      console.log(stateOfResponse);
 
       this.content.next(stateOfResponse);
       this.content.asObservable();
@@ -74,7 +71,6 @@ export class ChatService {
         text: message.activity.message || null,
         activity: message.activity,
       };
-      console.log('mensagem recebida', stateOfResponse);
 
       this.messages$.next(stateOfResponse);
       this.messages$.asObservable();
@@ -83,36 +79,36 @@ export class ChatService {
 
   presentImage(file: any) {
     const formData: FormData = new FormData();
-    formData.append('img', file, file.name)
+    formData.append('img', file, file.name);
 
-    this.http.post('http://localhost:8080/upload', formData, { responseType: 'text' }).subscribe((data: any) => {
-      console.log('data -> ', data)
-      this.callStompClientImg(data)
-    });
+    this.http
+      .post('http://localhost:8080/upload', formData, { responseType: 'text' })
+      .subscribe((data: any) => {
+        console.log('data -> ', data);
+        this.callStompClientImg(data);
+      });
   }
 
   callStompClientImg(data: any) {
     const request = {
-      imgSrc: data
-    }
+      imgSrc: data,
+    };
     this.stompClient.send('/app/img', {}, JSON.stringify(request));
     this.imgResponse();
   }
 
   imgResponse() {
     this.stompClient.subscribe('/topic/content', (payload: any) => {
-      console.log('chegou aqui');
 
       try {
-        // console.log(payload.body);
         const response = JSON.parse(payload.body);
-        const downloadFile = response.activity[response.activity.length - 1].imgSrc
+        const downloadFile =
+          response.activity[response.activity.length - 1].imgSrc;
         this.downloadImage(downloadFile);
       } catch (error) {
         console.error(error);
       }
     });
-
   }
 
   downloadImage(url: string) {
@@ -123,15 +119,13 @@ export class ChatService {
       };
       console.log('img recebida', stateOfResponse);
 
-      this.img$.next(stateOfResponse.img);
+      this.img$.next(stateOfResponse);
       this.img$.asObservable();
     });
   }
 
   removeUser() {
     this.disconnect();
-    // this.stompClient.send('/app/remove', {}, JSON.stringify(user));
-    // this.onDisConnected()
   }
 
   onDisConnected() {
@@ -155,7 +149,6 @@ export class ChatService {
     if (this.stompClient !== null) {
       this.stompClient.disconnect();
     }
-    console.log('Disconnected');
   }
 
   getMessages(): Observable<string> {

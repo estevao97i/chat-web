@@ -24,7 +24,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   selectedFile: File | null = null;
   images: any[] = [];
   fileContent: string | ArrayBuffer | any = null;
-  imagePresenting: any;
+  imagePresenting: any = null;
   binaryString: any;
 
   constructor(
@@ -62,7 +62,9 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
 
     this.service.img$.subscribe({
       next: (value: any) => {
-        this.imagePresenting = value;
+        if (value.hasOwnProperty('img')) {
+          this.imagePresenting = value.img;
+        }
       },
     });
   }
