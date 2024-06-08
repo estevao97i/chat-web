@@ -47,11 +47,8 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     this.service.content.subscribe({
       next: (value: any) => {
         this.users = value.users;
-        if (value.activity
-          //  && value.activity[value.activity.length - 1].hasOwnProperty('sameUser')
-          ) {
-            const response = this.service.transformActivity(value.activity)
-          // this.messages = value.activity;
+        if (value.activity) {
+          const response = this.service.transformActivity(value.activity);
           this.messages = response;
         }
         this.timeOutScroll();
@@ -133,21 +130,21 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
 
   noMouseDown(e: HTMLElement, img: HTMLImageElement) {
     this.willBeDeleted = e.innerText;
-    this.animationText = e.animate([
-      { transform: 'scale(1)' },
-      { transform: 'scale(0.9)', opacity: '0.2' },
-    ], {
-      duration: this.durationEffect,
-      fill: 'forwards'
-    })
+    this.animationText = e.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(0.9)', opacity: '0.2' }],
+      {
+        duration: this.durationEffect,
+        fill: 'forwards',
+      }
+    );
 
-    this.animationImg = img.animate([
-      { transform: 'scale(1)' },
-      { transform: 'scale(0.9)', opacity: '0.2' },
-    ], {
-      duration: this.durationEffect,
-      fill: 'forwards'
-    })
+    this.animationImg = img.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(0.9)', opacity: '0.2' }],
+      {
+        duration: this.durationEffect,
+        fill: 'forwards',
+      }
+    );
 
     this.delete = setTimeout(() => {
       this.onHoldComplete();
@@ -171,7 +168,9 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   }
 
   onHoldComplete() {
-    const indexDelete = this.images.findIndex((item) => item.description == this.willBeDeleted)
+    const indexDelete = this.images.findIndex(
+      (item) => item.description == this.willBeDeleted
+    );
     this.images.splice(indexDelete, 1);
   }
 }

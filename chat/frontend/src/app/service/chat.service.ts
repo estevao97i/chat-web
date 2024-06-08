@@ -24,11 +24,15 @@ export class ChatService {
 
     const _this = this;
     this.stompClient.connect({}, function (frame: any) {
-      _this.stompClient.subscribe('/topic/response', (message: any) => {
-        _this.messageSubject.next(message.body);
-      });
+      _this.receiveAll()
       _this.imgResponse();
       _this.onMessageReceived();
+    });
+  }
+
+  receiveAll() {
+    this.stompClient.subscribe('/topic/response', (message: any) => {
+      this.messageSubject.next(message.body);
     });
   }
 
@@ -60,7 +64,6 @@ export class ChatService {
       content: message,
     };
     this.stompClient.send('/app/send', {}, JSON.stringify(sendMessage));
-    // this.onMessageReceived();
   }
 
   onMessageReceived() {
@@ -68,10 +71,7 @@ export class ChatService {
     _this.stompClient.subscribe('/topic/response', (payload: any) => {
       const message = JSON.parse(payload.body);
       const stateOfResponse = {
-        // user: message.activity.user?.name || null,
-        // text: message.activity.message || null,
         activity: message.activity,
-        // sameUser: this.client === message.activity[message.activity.length - 1].user?.name
       };
 
       // const stateOfFinalResponse =
