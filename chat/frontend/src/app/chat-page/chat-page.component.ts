@@ -43,12 +43,16 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.service.content.subscribe({
       next: (value: any) => {
         this.users = value.users;
-        if (value.activity) {
-          this.messages = value.activity;
+        if (value.activity
+          //  && value.activity[value.activity.length - 1].hasOwnProperty('sameUser')
+          ) {
+            const response = this.service.transformActivity(value.activity)
+          // this.messages = value.activity;
+          this.messages = response;
         }
         this.timeOutScroll();
       },
@@ -72,16 +76,11 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
         }
       },
     });
-
-    this.btnMouse.nativeElement.onmousedown();
   }
 
   sendMessage(message: string) {
     if (!message) return;
-    this.service.sendMessage(
-      message
-      // this.messages[this.messages.length - 1].user.name
-    );
+    this.service.sendMessage(message);
     this.form.get('inputMessage')?.setValue(null);
     this.timeOutScroll();
   }

@@ -11,7 +11,7 @@
 .header {
   display: flex;
   position: relative;
-  justify-content: start;
+  justify-content: flex-start;
   height: 5rem;
 
   img {
@@ -61,7 +61,7 @@
     padding-bottom: 190px;
 
     header {
-      text-align: start;
+      text-align: flex-start;
       font-size: 40px;
       font-weight: 100;
       padding: 1rem;

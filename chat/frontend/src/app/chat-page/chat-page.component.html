@@ -22,8 +22,11 @@
           <br />
         </ng-container>
         <ng-container *ngIf="item.type === 'CHAT'">
-          <div class="item-appearence">
+          <div *ngIf="!item.sameUser" class="item-appearence">
             <label for="">{{ item.user.name }}</label> <label for="">{{ item.message }}</label>
+          </div>
+          <div *ngIf="item.sameUser" class="item-user-appearance">
+            <label for="">{{ item.message }}</label>
           </div>
           <br />
         </ng-container>

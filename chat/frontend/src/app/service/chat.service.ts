@@ -28,6 +28,7 @@ export class ChatService {
         _this.messageSubject.next(message.body);
       });
       _this.imgResponse();
+      _this.onMessageReceived();
     });
   }
 
@@ -59,7 +60,7 @@ export class ChatService {
       content: message,
     };
     this.stompClient.send('/app/send', {}, JSON.stringify(sendMessage));
-    this.onMessageReceived();
+    // this.onMessageReceived();
   }
 
   onMessageReceived() {
@@ -67,14 +68,38 @@ export class ChatService {
     _this.stompClient.subscribe('/topic/response', (payload: any) => {
       const message = JSON.parse(payload.body);
       const stateOfResponse = {
-        user: message.activity.user?.name || null,
-        text: message.activity.message || null,
+        // user: message.activity.user?.name || null,
+        // text: message.activity.message || null,
         activity: message.activity,
+        // sameUser: this.client === message.activity[message.activity.length - 1].user?.name
       };
+
+      // const stateOfFinalResponse =
+      stateOfResponse.activity
+        .filter((item: any) => item.type === 'CHAT')
+        .map((element: any) => {
+          if (element.user?.name === this.client) {
+            return (element.sameUser = true);
+          }
+          return (element.sameUser = false);
+        });
 
       this.messages$.next(stateOfResponse);
       this.messages$.asObservable();
     });
+  }
+
+  transformActivity(activityResponse: any) {
+    return (
+      activityResponse.activity
+        // .filter((item: any) => item.type === 'CHAT')
+        .map((element: any) => {
+          if (element.user?.name === this.client) {
+            return (element.sameUser = true);
+          }
+          return (element.sameUser = false);
+        })
+    );
   }
 
   presentImage(file: any) {
@@ -94,12 +119,11 @@ export class ChatService {
       imgSrc: data,
     };
     this.stompClient.send('/app/img', {}, JSON.stringify(request));
-    this.imgResponse();
+    // this.imgResponse();
   }
 
   imgResponse() {
     this.stompClient.subscribe('/topic/content', (payload: any) => {
-
       try {
         const response = JSON.parse(payload.body);
         const downloadFile =
