@@ -51,7 +51,7 @@
     </footer>
   </div>
   <div class="content">
-    <div class="content-file">
+    <div #image class="content-file">
       <ng-container *ngIf="!imagePresenting">
         <label>No Content</label>
       </ng-container>
@@ -63,22 +63,27 @@
     </div>
     <nav>
       <div class="insert-file">
-        <button (click)="fileInput.click()">Select File</button>
-        <input
-          type="file"
-          #fileInput
-          accept="image/*"
-          (change)="onFileSelected($event)"
-          style="display: none"
-        />
+        <div class="file-input-share">
+          <button class="btn-select-file" (click)="fileInput.click()">Select File</button>
+          <input
+            type="file"
+            #fileInput
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            style="display: none"
+          />
+        </div>
+        <div class="file-share" *ngIf="sameUserPresenting">
+          <button class="stop-share" (click)="onStopShare()">Stop Share</button>
+        </div>
       </div>
       <ng-container *ngIf="images.length < 1" >
         <label class="label-no-selected-files">No Selected files</label>
       </ng-container>
       <ng-container *ngIf="images.length > 0">
         <div class="files" >
-            <button (dblclick)="insertImageContent(nameImg)"
-             (mousedown)="noMouseDown(nameImg, imageCaroussel)" (mouseup)="onMouseUp()" (mouseleave)="onMouseLeave()"
+            <button (dblclick)="insertImageContent(nameImg, imageCaroussel, image)"
+             (mousedown)="onMouseDown(nameImg, imageCaroussel)" (mouseup)="onMouseUp()" (mouseleave)="onMouseLeave()"
             *ngFor="let item of images">
               <img src="{{item.image}}" alt="" #imageCaroussel />
               <label #nameImg> {{item.description}} </label>
@@ -86,5 +91,14 @@
         </div>
       </ng-container>
     </nav>
+  </div>
+</div>
+<div *ngIf="stopShareClicked" class="overlay">
+  <div class="modal-stop-share">
+    <label>Stop Share Content?</label>
+    <div class="action-btn">
+      <button (click)="stopShareClicked = !stopShareClicked">No, I want to continue.</button>
+      <button (click)="stop()">Yes, of course.</button>
+    </div>
   </div>
 </div>

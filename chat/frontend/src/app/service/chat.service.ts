@@ -24,7 +24,7 @@ export class ChatService {
 
     const _this = this;
     this.stompClient.connect({}, function (frame: any) {
-      _this.receiveAll()
+      _this.receiveAll();
       _this.imgResponse();
       _this.onMessageReceived();
     });
@@ -90,16 +90,19 @@ export class ChatService {
   }
 
   transformActivity(activityResponse: any) {
-    return (
-      activityResponse.activity
-        // .filter((item: any) => item.type === 'CHAT')
-        .map((element: any) => {
-          if (element.user?.name === this.client) {
-            return (element.sameUser = true);
-          }
-          return (element.sameUser = false);
-        })
-    );
+    if (activityResponse.activity) {
+      return (
+        activityResponse.activity
+          // .filter((item: any) => item.type === 'CHAT')
+          .map((element: any) => {
+            if (element.user?.name === this.client) {
+              return (element.sameUser = true);
+            }
+            return (element.sameUser = false);
+          })
+      );
+    }
+    return null;
   }
 
   presentImage(file: any) {
@@ -117,6 +120,7 @@ export class ChatService {
   callStompClientImg(data: any) {
     const request = {
       imgSrc: data,
+      username: this.client,
     };
     this.stompClient.send('/app/img', {}, JSON.stringify(request));
     // this.imgResponse();
@@ -126,26 +130,50 @@ export class ChatService {
     this.stompClient.subscribe('/topic/content', (payload: any) => {
       try {
         const response = JSON.parse(payload.body);
-        const downloadFile =
-          response.activity[response.activity.length - 1].imgSrc;
-        this.downloadImage(downloadFile);
+        const responseUserImg = response.activity[response.activity.length - 1];
+        const userImg = responseUserImg.user.name;
+
+        if (responseUserImg.imgSrc == 'stopShare') {
+          const stateOfResponse = {
+            img: null,
+            user: userImg === this.client,
+          };
+          // console.log('img recebida', stateOfResponse);
+
+          this.img$.next(stateOfResponse);
+          this.img$.asObservable();
+          return
+        }
+
+        const downloadFile = responseUserImg.imgSrc;
+        this.downloadImage(downloadFile, userImg);
       } catch (error) {
         console.error(error);
       }
     });
   }
 
-  downloadImage(url: string) {
+  downloadImage(url: string, user: string) {
     this.http.get(url, { responseType: 'blob' }).subscribe((blob: Blob) => {
       const blobURL = window.URL.createObjectURL(blob);
       const stateOfResponse = {
         img: blobURL,
+        user: user === this.client,
       };
-      console.log('img recebida', stateOfResponse);
+      // console.log('img recebida', stateOfResponse);
 
       this.img$.next(stateOfResponse);
       this.img$.asObservable();
     });
+  }
+
+  stopShare() {
+    const request = {
+      imgSrc: 'stopShare',
+      user: this.client
+    }
+
+    this.stompClient.send('/app/stop-img', {}, JSON.stringify(request));
   }
 
   removeUser() {

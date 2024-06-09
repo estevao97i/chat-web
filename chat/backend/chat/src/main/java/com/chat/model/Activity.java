@@ -26,8 +26,9 @@ public class Activity implements Serializable {
         this.message = messageComing;
     }
 
-    public Activity(String img, ActivityType type) {
+    public Activity(String img, ActivityType type, User user) {
         this.imgSrc = img;
         this.type = type;
+        this.user = user;
     }
 }

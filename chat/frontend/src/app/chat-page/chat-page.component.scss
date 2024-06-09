@@ -74,16 +74,16 @@
   place-items: center;
 
   button {
-    border: 1px solid rgb(218, 104, 104);
+    border: 1px solid rgb(201, 123, 123);
     background-color: #ffffff;
-    color: rgb(182, 0, 0);
+    color: rgb(201, 123, 123);
     border-radius: 4px;
     cursor: pointer;
     font-weight: 600;
     padding: 1rem 2.5rem;
 
     &:hover {
-      background-color: #ee3d3d;
+      background-color: rgb(201, 123, 123);
       color: white;
     }
   }
@@ -98,7 +98,7 @@
 
   section {
     padding: 1rem 1rem 0rem 1rem;
-    height: calc(100% - 4rem);
+    height: calc(100% - 4.5rem);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -166,7 +166,7 @@
       max-width: fit-content;
       padding: 4px 8px;
 
-      background-color: #ccc;
+      background-color: #aaaaaa;
       font-weight: 300;
       border-radius: 14px;
       color: white;
@@ -197,16 +197,16 @@
       }
 
       button {
-        border: 1px solid rgb(104, 218, 104);
+        border: 1px solid rgb(131, 211, 131);
         background-color: #ffffff;
-        color: rgb(30, 182, 0);
+        color: rgb(110, 218, 110);
         border-radius: 4px;
         cursor: pointer;
         font-weight: 600;
         padding: 0.5rem 0.8rem;
 
         &:hover {
-          background-color: #6fee3d;
+          background-color: rgb(110, 218, 110);
           color: white;
         }
       }
@@ -225,14 +225,17 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
   .content-file {
+    position: relative;
     display: grid;
     place-items: center;
     margin: 0 auto;
     height: 70%;
-    width: 96.5%;
+    max-width: 100%;
     padding: 6px 1rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 6px;
+    border: none;
+    box-shadow: none;
 
     label {
       font-size: 36px;
@@ -265,9 +268,8 @@
 
   & nav {
     position: relative;
-    margin: 0 auto;
     height: 20%;
-    width: 96.5%;
+    max-width: 100%;
     padding: 6px 1rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 6px;
@@ -278,27 +280,71 @@
 
     .insert-file {
       display: flex;
+      height: 60%;
       justify-content: center;
-      height: 50%;
+      gap: 1rem;
+      flex-direction: column;
 
-      button {
-        bottom: 1.5rem;
-        left: 1rem;
-        // height: 50%;
-        padding: calc(100% - 6rem) 1rem;
-        border: 1px solid rgb(170, 191, 201);
-        background-color: #ffffff;
-        color: rgb(131, 141, 150);
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 500;
-        flex-grow: 1;
+      .file-input-share {
 
-        &:hover {
-          background-color: #d2dde2;
-          color: white;
+        .btn-select-file {
+          padding: calc(100% - 3.8rem) 0.5rem;
+          border: 1px solid rgb(170, 191, 201);
+          background-color: #ffffff;
+          color: rgb(131, 141, 150);
+          border-radius: 4px;
+          cursor: pointer;
+          font-weight: 500;
+
+          &:hover {
+            background-color: #d2dde2;
+            color: white;
+          }
         }
       }
+
+      .file-share {
+
+        .stop-share {
+          padding: calc(100% - 3.8rem) 0.5rem;
+          border: 1px solid rgb(201, 123, 123) !important;
+          background-color: #ffffff;
+          color: rgb(199, 110, 110);
+          border-radius: 4px;
+          font-weight: 500;
+          border: none;
+          cursor: pointer;
+
+          &:hover {
+            background-color: rgb(199, 110, 110);
+            color: white;
+          }
+        }
+      }
+
+    }
+
+    @media screen and (max-height: 780px) {
+      .insert-file {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+
+        .file-input-share {
+          .btn-select-file {
+            padding: 1.5rem 0.8rem;
+            // background-color: red;
+          }
+        }
+
+        .file-share {
+          .stop-share {
+            padding: 1.5rem 0.8rem;
+          }
+        }
+
+      }
+
     }
 
     .files {
@@ -382,3 +428,77 @@
     }
   }
 }
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  // display: none;
+  background-color: rgba(0, 0, 0, 0.7); /* Black with 50% opacity */
+
+  .modal-stop-share {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 100px;
+    width: 350px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    transform: translate(-50%, -50%);
+
+    label {
+      font-size: 24px;
+      // text-align: center;
+      font-weight: 600;
+    }
+
+    .action-btn {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+
+      & :nth-child(1) {
+        padding: 10px 8px;
+          border: 1px solid rgb(170, 191, 201);
+          background-color: #ffffff;
+          color: rgb(131, 141, 150);
+          border-radius: 4px;
+          cursor: pointer;
+          font-weight: 500;
+
+          &:hover {
+            background-color: #d2dde2;
+            color: white;
+          }
+      }
+
+      & :nth-child(2) {
+        padding: 10px 8px;
+          border: 1px solid rgb(201, 123, 123) !important;
+          background-color: #ffffff;
+          color: rgb(199, 110, 110);
+          border-radius: 4px;
+          font-weight: 800;
+          border: none;
+          cursor: pointer;
+
+          &:hover {
+            background-color: rgb(199, 110, 110);
+            color: white;
+          }
+      }
+    }
+
+  }
+}
+
+

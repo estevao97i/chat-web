@@ -8,7 +8,11 @@ import {
 import { ChatService } from '../service/chat.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { timeout } from 'rxjs';
+
+interface Image {
+  img: string | null;
+  user: string | null;
+}
 
 @Component({
   selector: 'app-chat-page',
@@ -32,6 +36,8 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   animationImg!: Animation;
   animationText!: Animation;
   durationEffect: number = 650;
+  sameUserPresenting: any;
+  stopShareClicked: boolean = false;
 
   constructor(
     private service: ChatService,
@@ -49,7 +55,9 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
         this.users = value.users;
         if (value.activity) {
           const response = this.service.transformActivity(value.activity);
-          this.messages = response;
+          if (response) {
+            this.messages = response;
+          }
         }
         this.timeOutScroll();
       },
@@ -70,6 +78,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
       next: (value: any) => {
         if (value.hasOwnProperty('img')) {
           this.imagePresenting = value.img;
+          this.sameUserPresenting = value.user;
         }
       },
     });
@@ -120,15 +129,47 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     }
   }
 
-  insertImageContent(e: any) {
+  insertImageContent(e: HTMLElement, img: HTMLElement, imagePresenting: HTMLElement) {
     const selected = this.images.find((obj) => {
       return obj.inputFile.name === e.innerText;
     });
 
-    this.service.presentImage(selected.inputFile);
+    if (!this.imagePresenting) {
+      this.service.presentImage(selected.inputFile);
+      return;
+    }
+
+    if (this.sameUserPresenting) {
+      this.service.presentImage(selected.inputFile);
+      return;
+    }
+    this.animateSelectedCannotBeSelected(img, imagePresenting)
+    // logica de tremer a imagem
   }
 
-  noMouseDown(e: HTMLElement, img: HTMLImageElement) {
+  animateSelectedCannotBeSelected(imgSelected: HTMLElement, imagePresenting: HTMLElement) {
+    imgSelected.animate([
+      { transform: 'translateX(15px)' }, { transform: 'translateX(0)' }, { transform: 'translateX(15px)' }, { transform: 'translateX(0)' },
+    ], {
+      duration: 200,
+      fill: 'forwards'
+    })
+
+    imagePresenting.animate([
+      { borderWidth: '4px', borderStyle: 'solid', borderColor: 'red' }, { border: 'none' }
+    ], {duration: 1000, fill: 'forwards'})
+  }
+
+  onStopShare() {
+    this.stopShareClicked = true;
+  }
+
+  stop() {
+    this.service.stopShare();
+    this.stopShareClicked = false;
+  }
+
+  onMouseDown(e: HTMLElement, img: HTMLImageElement) {
     this.willBeDeleted = e.innerText;
     this.animationText = e.animate(
       [{ transform: 'scale(1)' }, { transform: 'scale(0.9)', opacity: '0.2' }],

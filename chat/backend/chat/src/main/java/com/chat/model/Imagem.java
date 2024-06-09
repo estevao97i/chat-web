@@ -14,4 +14,5 @@ import java.io.Serializable;
 public class Imagem implements Serializable {
 
     private String imgSrc;
+    private String username;
 }

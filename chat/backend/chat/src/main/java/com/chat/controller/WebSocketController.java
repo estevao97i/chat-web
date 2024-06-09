@@ -54,7 +54,15 @@ public class WebSocketController {
 
     @MessageMapping("/img")
     public Content sendImg(@Payload Imagem img) {
-        CONTENT.getActivity().add(new Activity(img.getImgSrc(), ActivityType.SHARE));
+        CONTENT.getActivity().add(new Activity(img.getImgSrc(), ActivityType.SHARE, new User(img.getUsername())));
+        simpMessageSendingOperations.convertAndSend("/topic/content", CONTENT);
+
+        return CONTENT;
+    }
+
+    @MessageMapping("/stop-img")
+    public Content stopImg(@Payload Imagem img) {
+        CONTENT.getActivity().add(new Activity(img.getImgSrc(), ActivityType.SHARE, new User(img.getUsername())));
         simpMessageSendingOperations.convertAndSend("/topic/content", CONTENT);
 
         return CONTENT;
