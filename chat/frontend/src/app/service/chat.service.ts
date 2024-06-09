@@ -45,7 +45,6 @@ export class ChatService {
   onConnected() {
     const _this = this;
     _this.stompClient.subscribe('/topic/response', (payload: any) => {
-      console.log('received', payload);
       const message = JSON.parse(payload.body);
       const stateOfResponse = {
         users: Object.values(message.users),
@@ -74,7 +73,6 @@ export class ChatService {
         activity: message.activity,
       };
 
-      // const stateOfFinalResponse =
       stateOfResponse.activity
         .filter((item: any) => item.type === 'CHAT')
         .map((element: any) => {
@@ -93,7 +91,6 @@ export class ChatService {
     if (activityResponse.activity) {
       return (
         activityResponse.activity
-          // .filter((item: any) => item.type === 'CHAT')
           .map((element: any) => {
             if (element.user?.name === this.client) {
               return (element.sameUser = true);
@@ -112,7 +109,6 @@ export class ChatService {
     this.http
       .post('http://localhost:8080/upload', formData, { responseType: 'text' })
       .subscribe((data: any) => {
-        console.log('data -> ', data);
         this.callStompClientImg(data);
       });
   }
@@ -123,7 +119,6 @@ export class ChatService {
       username: this.client,
     };
     this.stompClient.send('/app/img', {}, JSON.stringify(request));
-    // this.imgResponse();
   }
 
   imgResponse() {
@@ -138,7 +133,6 @@ export class ChatService {
             img: null,
             user: userImg === this.client,
           };
-          // console.log('img recebida', stateOfResponse);
 
           this.img$.next(stateOfResponse);
           this.img$.asObservable();
@@ -160,7 +154,6 @@ export class ChatService {
         img: blobURL,
         user: user === this.client,
       };
-      // console.log('img recebida', stateOfResponse);
 
       this.img$.next(stateOfResponse);
       this.img$.asObservable();
@@ -183,14 +176,12 @@ export class ChatService {
   onDisConnected() {
     const _this = this;
     _this.stompClient.subscribe('/topic/leave', (payload: any) => {
-      console.log('received', payload);
       const message = JSON.parse(payload.body);
       const stateOfResponse = {
         users: Object.values(message.users),
         text: message.content || null,
         activity: message.activity,
       };
-      console.log(stateOfResponse);
 
       this.content.next(stateOfResponse);
       this.content.asObservable();

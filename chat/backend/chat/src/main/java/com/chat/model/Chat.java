@@ -1,9 +1,7 @@
 package com.chat.model;
 
-import com.chat.enums.MessageType;
 import lombok.*;
 
-import java.awt.*;
 import java.io.Serializable;
 
 @Getter

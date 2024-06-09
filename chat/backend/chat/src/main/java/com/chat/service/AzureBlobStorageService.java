@@ -32,11 +32,6 @@ public class AzureBlobStorageService {
                 .buildClient();
     }
 
-    //    public String uploadFile(MultipartFile file) throws IOException {
-//        BlobClient blobClient = containerClient.getBlobClient(file.getOriginalFilename());
-//        blobClient.upload(file.getInputStream(), file.getSize(), true);
-//        return blobClient.getBlobUrl();
-//    }
     public String uploadFile(MultipartFile file) throws IOException {
         BlobClient blobClient = containerClient.getBlobClient(file.getOriginalFilename());
         BlobHttpHeaders headers = new BlobHttpHeaders().setContentType(file.getContentType());

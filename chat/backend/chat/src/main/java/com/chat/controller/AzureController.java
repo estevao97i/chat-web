@@ -33,9 +33,6 @@ public class AzureController {
     public ResponseEntity<String> singleFileUpload(@RequestParam("img") MultipartFile file) throws IOException {
         try {
             String blobUrl = azureBlobStorageService.uploadFile(file);
-//            CONTENT.getActivity().add(new Activity(blobUrl, ActivityType.SHARE));
-
-//            simpMessagingTemplate.convertAndSend("/topic/content", CONTENT);
             return new ResponseEntity<>(blobUrl, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();

@@ -22,6 +22,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/topic", "/message", "leave");
         registry.setApplicationDestinationPrefixes("/app");
         registry.setUserDestinationPrefix("/user");
-//        WebSocketMessageBrokerConfigurer.super.configureMessageBroker(registry);
     }
 }

@@ -32,42 +32,4 @@ public class WebConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
-//    private void liberacaoCors(HttpServletResponse response) {
-//        if (response.getHeader("Access-Control-Allow-Origin") == null) {
-//            response.addHeader("Access-Control-Allow-Origin", "*");
-//        }
-//
-//        if (response.getHeader("Access-Control-Allow-Headers") == null) {
-//            response.addHeader("Access-Control-Allow-Headers", "*");
-//        }
-//
-//        if (response.getHeader("Access-Control-Request-Headers") == null) {
-//            response.addHeader("Access-Control-Request-Headers", "*");
-//        }
-//
-//        if (response.getHeader("Access-Control-Allow-Methods") == null) {
-//            response.addHeader("Access-Control-Allow-Methods", "*");
-//        }
-//    }
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowedOrigins(List.of("http://localhost:4200/", "https://origin2.com"));
-//        config.setAllowCredentials(true);
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", config);
-//        return source;
-//    }
-
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**");
-//                .allowedOrigins("*")
-//                .allowedOriginPatterns()
-//                .allowedMethods("GET", "POST", "PUT", "DELETE")
-//                .allowedHeaders("true")
-//                .exposedHeaders("Authorization");
-//        WebMvcConfigurer.super.addCorsMappings(registry);
-//    }
 }

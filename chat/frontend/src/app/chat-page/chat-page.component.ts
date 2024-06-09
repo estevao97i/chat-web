@@ -144,7 +144,6 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
       return;
     }
     this.animateSelectedCannotBeSelected(img, imagePresenting)
-    // logica de tremer a imagem
   }
 
   animateSelectedCannotBeSelected(imgSelected: HTMLElement, imagePresenting: HTMLElement) {

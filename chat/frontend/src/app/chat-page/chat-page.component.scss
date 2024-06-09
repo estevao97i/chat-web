@@ -174,7 +174,6 @@
   }
 
   footer {
-    // padding-top: 0.8rem;
     padding-top: 0rem;
 
     .btn-action {
@@ -333,7 +332,6 @@
         .file-input-share {
           .btn-select-file {
             padding: 1.5rem 0.8rem;
-            // background-color: red;
           }
         }
 
@@ -355,10 +353,6 @@
       width: 100%;
       justify-content: flex-start;
 
-      // .file-select {
-      // width: 10vh;
-      // height: 10vh;
-
       button {
         display: flex;
         flex-direction: column;
@@ -367,7 +361,6 @@
         align-items: center;
         background: transparent;
         border: none;
-        // width: 10%;
 
         img {
           max-width: 80%;
@@ -405,8 +398,6 @@
         }
       }
 
-      // }
-
       &::-webkit-scrollbar {
         background-color: rgb(235, 235, 235);
         border-radius: 6px;
@@ -437,8 +428,7 @@
   width: 100%;
   height: 100%;
   z-index: 9;
-  // display: none;
-  background-color: rgba(0, 0, 0, 0.7); /* Black with 50% opacity */
+  background-color: rgba(0, 0, 0, 0.7);
 
   .modal-stop-share {
     padding: 2rem;
@@ -457,7 +447,6 @@
 
     label {
       font-size: 24px;
-      // text-align: center;
       font-weight: 600;
     }
 
