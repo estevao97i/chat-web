@@ -99,9 +99,12 @@
   section {
     padding: 1rem 1rem 0rem 1rem;
     height: calc(100% - 4rem);
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+
 
     &::-webkit-scrollbar {
       background-color: rgb(235, 235, 235);
@@ -120,7 +123,7 @@
       gap: 0.3rem;
 
       & :nth-child(1) {
-        background-color: rgb(18, 189, 32);
+        background-color: rgb(40, 236, 57);
         color: white;
         padding: 4px 8px;
         border-radius: 14px;
@@ -135,8 +138,8 @@
         hyphens: auto; /* Adiciona hífens conforme necessário */
         padding: 4px 12px;
         border-radius: 0px 14px 14px 14px;
-        color: white;
-        background-color: rgb(86, 99, 216);
+        color: rgb(0, 0, 0);
+        background-color: rgb(231, 231, 231);
       }
     }
 
@@ -151,7 +154,7 @@
         padding: 4px 12px;
         border-radius: 14px 14px 0px 14px;
         color: white;
-        background-color: rgb(28, 37, 124);
+        background-color: rgb(24, 71, 228);
       }
     }
 

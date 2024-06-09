@@ -17,9 +17,9 @@
       <ng-container *ngFor="let item of messages">
         <ng-container *ngIf="item.type === 'JOIN' || item.type === 'LEAVE'" >
           <div class="joined-leave">
-            <label >{{ item.type }}</label>: <label>{{ item.user.name }}</label>
+            <label >{{ item.type }}</label>| <label>{{ item.user.name }}</label>
           </div>
-          <br />
+          <!-- <br /> -->
         </ng-container>
         <ng-container *ngIf="item.type === 'CHAT'">
           <div *ngIf="!item.sameUser" class="item-appearence">
@@ -28,7 +28,7 @@
           <div *ngIf="item.sameUser" class="item-user-appearance">
             <label for="">{{ item.message }}</label>
           </div>
-          <br />
+          <!-- <br /> -->
         </ng-container>
       </ng-container>
     </section>
